@@ -1,7 +1,7 @@
 # mini_store
 
-Flutter app where I'll be implementing 
+Flutter app where I'll be implementing followings
 <br>
-API integration as well as 
+API integration
 <br>
 CRUD operations.
