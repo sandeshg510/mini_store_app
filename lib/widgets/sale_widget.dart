@@ -28,10 +28,10 @@ class SaleCard extends StatelessWidget {
               child: Container(
                 height: double.infinity,
                 decoration: BoxDecoration(
-                    color: Color(0xff9689ce),
+                    color: const Color(0xff9689ce),
                     borderRadius: BorderRadius.circular(18)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
