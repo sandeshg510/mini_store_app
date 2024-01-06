@@ -1,6 +1,8 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:mini_store/consts/global_colors.dart';
+import 'package:mini_store/widgets/feeds_widget.dart';
 import 'package:mini_store/widgets/sale_widget.dart';
 import '../widgets/appbar_icons.dart';
 
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -39,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             function: () {},
             icon: IconlyBold.category,
           ),
-          title: Text('Home'),
+          title: const Text('Home'),
           actions: [
             AppBarIcons(
               function: () {},
@@ -48,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
               TextField(
@@ -77,10 +80,41 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: lightIconsColor,
                     )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              SaleCard(),
+              SizedBox(
+                height: size.height * 0.25,
+                width: double.infinity,
+                child: Swiper(
+                  itemCount: 3,
+                  itemBuilder: (ctx, index) {
+                    return const SaleWidget();
+                  },
+                  autoplay: false,
+                  pagination: const SwiperPagination(
+                      alignment: Alignment.bottomCenter,
+                      builder: DotSwiperPaginationBuilder(
+                          color: Colors.white, activeColor: Colors.deepPurple)),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.06,
+                child: const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4.0, right: 230),
+                    child: Text(
+                      'Latest Products',
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: size.width * 0.5, child: const FeedWidget()),
             ],
           ),
         ),

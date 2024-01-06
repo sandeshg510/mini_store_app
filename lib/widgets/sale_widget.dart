@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mini_store/consts/global_colors.dart';
 
-class SaleCard extends StatelessWidget {
-  const SaleCard({super.key});
+class SaleWidget extends StatelessWidget {
+  const SaleWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
