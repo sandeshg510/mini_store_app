@@ -1,12 +1,15 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:mini_store/Services/api_handler.dart';
 import 'package:mini_store/consts/global_colors.dart';
 import 'package:mini_store/screens/categories_screen.dart';
 import 'package:mini_store/screens/feeds_screen.dart';
+import 'package:mini_store/screens/user_screen.dart';
 import 'package:mini_store/widgets/feeds_widget.dart';
 import 'package:mini_store/widgets/sale_widget.dart';
 import 'package:page_transition/page_transition.dart';
+import '../models/products_model.dart';
 import '../widgets/appbar_icons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController _textEditingController;
+  List<ProductsModel> productList = [];
 
   @override
   void initState() {
@@ -32,6 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    getProducts();
+    super.didChangeDependencies();
+  }
+
+  Future<void> getProducts() async {
+    productList = await APIHandler.getAllProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
@@ -41,21 +55,33 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.5,
-          leading: AppBarIcons(
-            function: () {
-              Navigator.push(
-                  context,
-                  PageTransition(
-                      child: const CategoriesScreen(),
-                      type: PageTransitionType.fade));
-            },
-            icon: IconlyBold.category,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AppBarIcons(
+              function: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: const CategoriesScreen(),
+                        type: PageTransitionType.fade));
+              },
+              icon: IconlyBold.category,
+            ),
           ),
           title: const Text('Home'),
           actions: [
-            AppBarIcons(
-              function: () {},
-              icon: IconlyBold.user3,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AppBarIcons(
+                function: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: const UserScreen(),
+                          type: PageTransitionType.fade));
+                },
+                icon: IconlyBold.user3,
+              ),
             )
           ],
         ),
@@ -94,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
                       const SizedBox(
-                        height: 10,
+                        height: 18,
                       ),
                       SizedBox(
                         height: size.height * 0.25,
@@ -113,10 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: size.height * 0.06,
+                        height: size.height * 0.1,
                         child: Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 15, top: 15, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -126,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 AppBarIcons(
