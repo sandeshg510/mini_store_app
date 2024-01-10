@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:mini_store/consts/global_colors.dart';
+import 'package:mini_store/screens/categories_screen.dart';
 import 'package:mini_store/screens/feeds_screen.dart';
 import 'package:mini_store/widgets/feeds_widget.dart';
 import 'package:mini_store/widgets/sale_widget.dart';
@@ -41,7 +42,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           elevation: 0.5,
           leading: AppBarIcons(
-            function: () {},
+            function: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      child: const CategoriesScreen(),
+                      type: PageTransitionType.fade));
+            },
             icon: IconlyBold.category,
           ),
           title: const Text('Home'),
