@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:mini_store/Services/api_handler.dart';
 import 'package:mini_store/consts/global_colors.dart';
+import 'package:mini_store/models/new_products_model.dart';
 import 'package:mini_store/screens/categories_screen.dart';
 import 'package:mini_store/screens/feeds_screen.dart';
 import 'package:mini_store/screens/user_screen.dart';
-import 'package:mini_store/widgets/feeds_widget.dart';
+import 'package:mini_store/widgets/feeds_grid.dart';
 import 'package:mini_store/widgets/sale_widget.dart';
 import 'package:page_transition/page_transition.dart';
-import '../models/products_model.dart';
 import '../widgets/appbar_icons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController _textEditingController;
-  List<ProductsModel> productList = [];
+  // List<ProductsModel> productList = [];
+  // List<NewProductsModel> productList = [];
 
   @override
   void initState() {
@@ -35,15 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    getProducts();
-    super.didChangeDependencies();
-  }
-
-  Future<void> getProducts() async {
-    productList = await APIHandler.getAllProducts();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getProducts();
+  //   super.didChangeDependencies();
+  // }
+  //
+  // Future<void> getProducts() async {
+  //   productList = await APIHandler.getAllProducts();
+  //
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,19 +173,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 3,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisSpacing: 0,
-                                  crossAxisSpacing: 0,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 0.6),
-                          itemBuilder: (ctx, index) {
-                            return const FeedWidget();
-                          }),
+                      FutureBuilder<List<NewProductsModel>>(
+                          future: APIHandler.getAllProducts(),
+                          builder: ((context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 90.0),
+                                child: CircularProgressIndicator(
+                                  color: lightIconsColor,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text(
+                                      'An error occured : ${snapshot.error}'));
+                            } else if (snapshot.data == null) {
+                              return const Center(
+                                  child:
+                                      Text('No products has been added yet!'));
+                            }
+                            return FeedsGridWidget(productList: snapshot.data!);
+                          }))
+                      // productList.isEmpty
+                      //     ? Padding(
+                      //         padding: const EdgeInsets.only(top: 90.0),
+                      //         child: CircularProgressIndicator(
+                      //           color: lightIconsColor,
+                      //         ),
+                      //       )
+                      //     : FeedsGridWidget(
+                      //         productList: productList,
+                      //       ),
                     ],
                   ),
                 ),

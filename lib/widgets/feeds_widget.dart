@@ -5,7 +5,12 @@ import 'package:mini_store/consts/global_colors.dart';
 import 'package:mini_store/screens/product_details.dart';
 
 class FeedWidget extends StatelessWidget {
-  const FeedWidget({super.key});
+  const FeedWidget(
+      {super.key,
+      required this.title,
+      required this.imageUrl,
+      required this.price});
+  final String title, imageUrl, price;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class FeedWidget extends StatelessWidget {
                         style: const TextStyle(color: Colors.blue),
                         children: <TextSpan>[
                           TextSpan(
-                              text: '168.00',
+                              text: price,
                               style: TextStyle(
                                   color: lightTextColor,
                                   fontWeight: FontWeight.w600))
@@ -54,7 +59,7 @@ class FeedWidget extends StatelessWidget {
                     color: Colors.red,
                     size: 28,
                   ),
-                  imageUrl: 'https://i.ibb.co/vwB46Yq/shoes.png',
+                  imageUrl: imageUrl,
                   width: double.infinity,
                   boxFit: BoxFit.fill,
                   height: size.height * 0.2,
@@ -63,13 +68,14 @@ class FeedWidget extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Padding(
-                padding: EdgeInsets.all(8),
+              Padding(
+                padding: const EdgeInsets.all(8),
                 child: Text(
-                  'Title',
+                  title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w700),
                 ),
               ),
               SizedBox(
