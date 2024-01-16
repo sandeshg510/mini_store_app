@@ -1,11 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:mini_store/screens/product_details.dart';
-
 import '../Services/api_handler.dart';
 import '../consts/global_colors.dart';
 import '../models/new_products_model.dart';
-import '../models/products_model.dart';
 import '../widgets/feeds_widget.dart';
 
 class FeedsScreen extends StatefulWidget {
@@ -17,15 +14,50 @@ class FeedsScreen extends StatefulWidget {
 
 class _FeedsScreenState extends State<FeedsScreen> {
   List<NewProductsModel> productList = [];
+  final ScrollController _scrollController = ScrollController();
+  int limit = 10;
+  bool _isLimit = false;
+
+  @override
+  void initState() {
+    getProducts();
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
-    getProducts();
     super.didChangeDependencies();
+
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        setState(() {});
+        limit += 5;
+        log('limit $limit');
+
+        await getProducts();
+      }
+      if (limit == 10) {
+        _isLimit = true;
+        setState(() {});
+        return;
+      }
+      if (limit >= 20) {
+        _isLimit = false;
+        setState(() {});
+        return;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> getProducts() async {
-    productList = await APIHandler.getAllProducts();
+    productList = await APIHandler.getAllProducts(limit: limit.toString());
     setState(() {});
   }
 
@@ -41,20 +73,37 @@ class _FeedsScreenState extends State<FeedsScreen> {
                 color: lightIconsColor,
               ),
             )
-          : GridView.builder(
-              itemCount: productList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.6),
-              itemBuilder: (ctx, index) {
-                return FeedWidget(
-                  title: productList[index].title.toString(),
-                  imageUrl: productList[index].image!,
-                  price: productList[index].price.toString(),
-                );
-              }),
+          : SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: [
+                  GridView.builder(
+                      itemCount: productList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 0,
+                              crossAxisSpacing: 0,
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.6),
+                      itemBuilder: (ctx, index) {
+                        return FeedWidget(
+                          title: productList[index].title.toString(),
+                          imageUrl: productList[index].image!,
+                          price: productList[index].price.toString(),
+                          Id: productList[index].id.toString(),
+                        );
+                      }),
+                  if (_isLimit)
+                    Center(
+                      child: CircularProgressIndicator(
+                        color: lightIconsColor,
+                      ),
+                    ),
+                ],
+              ),
+            ),
     );
   }
 }

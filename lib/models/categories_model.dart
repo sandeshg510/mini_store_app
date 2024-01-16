@@ -1,4 +1,6 @@
-class CategoriesModel {
+import 'package:flutter/cupertino.dart';
+
+class CategoriesModel with ChangeNotifier {
   int? id;
   String? name;
   String? image;
@@ -24,5 +26,11 @@ class CategoriesModel {
     data['creationAt'] = creationAt;
     data['updatedAt'] = updatedAt;
     return data;
+  }
+
+  static List<CategoriesModel> categoriesFromSnapshot(List categoriesSnapshot) {
+    return categoriesSnapshot.map((data) {
+      return CategoriesModel.fromJson(data);
+    }).toList();
   }
 }

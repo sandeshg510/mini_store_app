@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mini_store/models/new_products_model.dart';
-
-import '../models/products_model.dart';
 import 'feeds_widget.dart';
 
 class FeedsGridWidget extends StatelessWidget {
@@ -24,6 +22,7 @@ class FeedsGridWidget extends StatelessWidget {
             title: productList[index].title.toString(),
             imageUrl: productList[index].image!,
             price: productList[index].price.toString(),
+            Id: productList[index].id.toString(),
           );
         });
   }

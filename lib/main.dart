@@ -9,10 +9,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool isDark = false;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter 3.0.4 ',

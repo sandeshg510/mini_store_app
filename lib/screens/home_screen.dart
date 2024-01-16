@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       PageTransition(
-                          child: const UserScreen(),
+                          child: const UsersScreen(),
                           type: PageTransitionType.fade));
                 },
                 icon: IconlyBold.user3,
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       FutureBuilder<List<NewProductsModel>>(
-                          future: APIHandler.getAllProducts(),
+                          future: APIHandler.getAllProducts(limit: '3'),
                           builder: ((context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {

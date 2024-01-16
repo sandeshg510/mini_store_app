@@ -9,8 +9,9 @@ class FeedWidget extends StatelessWidget {
       {super.key,
       required this.title,
       required this.imageUrl,
-      required this.price});
-  final String title, imageUrl, price;
+      required this.price,
+      required this.Id});
+  final String title, imageUrl, price, Id;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,14 @@ class FeedWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductDetails()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetails(
+                  id: Id,
+                ),
+              ),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 5.0, right: 5, top: 8),

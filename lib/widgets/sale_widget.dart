@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mini_store/consts/global_colors.dart';
 
 class SaleWidget extends StatelessWidget {
   const SaleWidget({super.key});
