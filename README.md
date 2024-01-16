@@ -4,4 +4,4 @@ Flutter app where I'll be implementing followings :
 <br>
 API integration,
 <br>
-CRUD operations.
+Provider State management.
